@@ -1,0 +1,205 @@
+<br>
+<div class="container">
+	<div class="form-group">
+		<label for="titulo">Título:</label>
+		<input type="text" id="titulo" name="titulo" class="form-control" [(ngModel)]="app.title" [class.error]="clases.titleApp" (blur)="inputCorrecto('titleApp')" required>
+	</div>
+	<div class="form-group">
+		<label for="descripcion">Descripción:</label>
+		<textarea name="descripcion" id="descripcion" class="form-control" cols="30" rows="10" [(ngModel)]="app.description" [class.error]="clases.descriptionApp" (blur)="inputCorrecto('descriptionApp')" required></textarea>
+	</div>
+	<div class="form-horizontal">
+		<icon [idFotos]="id_fotos"></icon>
+		<captures [idFotos]="id_fotos"></captures>
+	</div>
+	<div class="form-group">
+		<label for="url_web">URL Web:</label>
+		<input type="text" id="url_web" name="url_web" class="form-control" [(ngModel)]="app.url_web">
+	</div>
+	<div class="form-group">
+		<label for="precio">Precio:</label>
+		<input type="number" id="precio" name="precio" class="form-control" [(ngModel)]="app.price" [class.error]="clases.priceApp" required>
+	</div>
+	<div class="form-group">
+		<label for="version">Versión:</label>
+		<input type="number" id="version" name="version" class="form-control" [(ngModel)]="app.version">
+	</div>
+	<div class="form-group">
+		<label for="url_video">URL Video:</label>
+		<input type="text" id="url_video" name="url_video" class="form-control" [(ngModel)]="app.url_video">
+	</div>
+	<div class="row">
+		<div class="form-group col-sm-6 col-md-6">
+			<label for="pais">País:</label>
+			<select name="pais" id="pais" class="form-control" [(ngModel)]="app.country"></select>
+		</div>
+		<div class="form-group col-sm-6 col-md-6">
+			<label for="idioma">Idioma:</label>
+			<select name="idioma" id="idioma" class="form-control" [(ngModel)]="app.language" [class.error]="clases.languageApp" (blur)="inputCorrecto('languageApp')" required></select>
+		</div>
+	</div>
+	<h4>Categorías</h4>
+	<hr>
+	<div class="row" id="contenedor-categoria">
+		<div class="form-group col-sm-8">
+			<label for="categoria">Categoría 1:</label>
+			<select name="categoria" id="categoria" class="form-control" [class.error]="clases.categoryApp" [(ngModel)]="vision_categorias.categoria_1" (blur)="inputCorrecto('categoryApp')" required></select>
+			<p class="help-block">Puedes elegir hasta un máximo de 5 categorías</p>
+		</div>
+		<div class="from-group col-sm-4">
+			<button id="btn-mas-categorias" class="btn btn-file" (click)="addCategoriaSelect();">+ Añadir categoría</button>
+			<button *ngIf="categoriaAnidada" class="btn btn-file" (click)="eliminarCategoria()">- Eliminar Categoría</button>
+		</div>
+	</div>
+	<div class="form-group" id="contenedor-categoria-2" [hidden]="vision_categorias.categoria2">
+			<label for="categoria-2">Categoría 2:</label>
+			<select name="categoria-2" id="categoria-2" class="form-control" [(ngModel)]="vision_categorias.categoria_2"></select>
+	</div>
+	<div class="form-group" id="contenedor-categoria-3" [hidden]="vision_categorias.categoria3">
+			<label for="categoria-3">Categoría 3:</label>
+			<select name="categoria-3" id="categoria-3" class="form-control" [(ngModel)]="vision_categorias.categoria_3"></select>
+	</div>
+	<div class="form-group" id="contenedor-categoria-4" [hidden]="vision_categorias.categoria4">
+			<label for="categoria-4">Categoría 4:</label>
+			<select name="categoria-4" id="categoria-4" class="form-control" [(ngModel)]="vision_categorias.categoria_4"></select>
+	</div>
+	<div class="form-group" id="contenedor-categoria-5" [hidden]="vision_categorias.categoria5">
+			<label for="categoria-5">Categoría 5:</label>
+			<select name="categoria-5" id="categoria-5" class="form-control" [(ngModel)]="vision_categorias.categoria_5"></select>
+	</div>
+	<h4>Plataformas</h4>
+	<hr>
+	<div class="row" id="contenedor-plataforma">
+		<div class="form-group col-sm-8">
+			<label for="plataforma">Plataforma 1:</label>
+			<select name="plataforma" id="plataforma" class="form-control" [class.error]="clases.platformApp" [(ngModel)]="vision_plataformas.plataforma_1" (blur)="inputCorrecto('platformApp');" required></select>
+			<p class="help-block">Puedes elegir hasta un máximo de 5 plataformas, en caso de necesitar más elija la opción multiplataforma</p>
+		</div>
+		<div class="form-group col-sm-4">
+			<button id="btn-mas-plataformas" class="btn btn-file" (click)="addPlataformaSelect();">+ Añadir plataforma</button>
+			<button *ngIf="plataformaAnidada" class="btn btn-file" (click)="eliminarPlataforma()">- Eliminar plataforma</button>
+		</div>
+	</div>
+	<div class="form-group" [hidden]="vision_plataformas.plataforma2">
+		<label for="plataforma-2">Plataforma 2:</label>
+		<select name="plataforma-2" id="plataforma-2" class="form-control" [(ngModel)]="vision_plataformas.plataforma_2"></select>
+	</div>
+	<div class="form-group" [hidden]="vision_plataformas.plataforma3">
+		<label for="plataforma-3">Plataforma 3:</label>
+		<select name="plataforma-3" id="plataforma-3" class="form-control" [(ngModel)]="vision_plataformas.plataforma_3"></select>
+	</div>
+	<div class="form-group" [hidden]="vision_plataformas.plataforma4">
+		<label for="plataforma-4">Plataforma 4:</label>
+		<select name="plataforma-4" id="plataforma-4" class="form-control" [(ngModel)]="vision_plataformas.plataforma_4"></select>
+	</div>
+	<div class="form-group" [hidden]="vision_plataformas.plataforma5">
+		<label for="plataforma-5">Plataforma 5:</label>
+		<select name="plataforma-5" id="plataforma-5" class="form-control" [(ngModel)]="vision_plataformas.plataforma_5"></select>
+	</div>
+	<h4>Datasets</h4>
+	<hr>
+	<div class="row" id="contenedor-dataset">
+		<div class="form-group col-sm-8">
+			<label for="dataset">Dataset 1:</label>
+			<select name="dataset" id="dataset" class="form-control" [class.error]="clases.datasetApp" [(ngModel)]="vision_datasets.dataset_1" (blur)="inputCorrecto('datasetApp')" required></select>
+			<a href="javascript:void(0)" class="text-primary" (click)="addNuevoDataset();">Mi dataset no existe en la lista.</a><small class="text-muted"> Puedes añadir hasta 10 datasets</small>
+		</div>
+		<div class="form-group col-sm-4">
+			<button id="btn-mas-dataset" class="btn btn-file" (click)="addDatasetSelect();">+ Añadir dataset</button>
+			<button *ngIf="datasetAnidado" class="btn btn-file" (click)="eliminarDataset();">- Eliminar dataset</button>
+		</div>
+	</div>
+	<div class="form-group" [hidden]="vision_datasets.dataset2">
+		<label for="dataset-2">Dataset 2:</label>
+		<select name="dataset-2" id="dataset-2" class="form-control" [(ngModel)]="vision_datasets.dataset_2"></select>
+	</div>
+	<div class="form-group" [hidden]="vision_datasets.dataset3">
+		<label for="dataset-3">Dataset 3:</label>
+		<select name="dataset-3" id="dataset-3" class="form-control" [(ngModel)]="vision_datasets.dataset_3"></select>
+	</div>
+	<div class="form-group" [hidden]="vision_datasets.dataset4">
+		<label for="dataset-4">Dataset 4:</label>
+		<select name="dataset-4" id="dataset-4" class="form-control" [(ngModel)]="vision_datasets.dataset_4"></select>
+	</div>
+	<div class="form-group" [hidden]="vision_datasets.dataset5">
+		<label for="dataset-5">Dataset 5:</label>
+		<select name="dataset-5" id="dataset-5" class="form-control" [(ngModel)]="vision_datasets.dataset_5"></select>
+	</div>
+	<div class="form-group" [hidden]="vision_datasets.dataset6">
+		<label for="dataset-6">Dataset 6:</label>
+		<select name="dataset-6" id="dataset-6" class="form-control" [(ngModel)]="vision_datasets.dataset_6"></select>
+	</div>
+	<div class="form-group" [hidden]="vision_datasets.dataset7">
+		<label for="dataset-7">Dataset 7:</label>
+		<select name="dataset-7" id="dataset-7" class="form-control" [(ngModel)]="vision_datasets.dataset_7"></select>
+	</div>
+	<div class="form-group" [hidden]="vision_datasets.dataset8">
+		<label for="dataset-8">Dataset 8:</label>
+		<select name="dataset-8" id="dataset-8" class="form-control" [(ngModel)]="vision_datasets.dataset_8"></select>
+	</div>
+	<div class="form-group" [hidden]="vision_datasets.dataset9">
+		<label for="dataset-9">Dataset 9:</label>
+		<select name="dataset-9" id="dataset-9" class="form-control" [(ngModel)]="vision_datasets.dataset_9"></select>
+	</div>
+		<div class="form-group" [hidden]="vision_datasets.dataset10">
+		<label for="dataset-10">Dataset 10:</label>
+		<select name="dataset-10" id="dataset-10" class="form-control" [(ngModel)]="vision_datasets.dataset_10"></select>
+	</div>
+	<div id="form-dataset" [hidden]="formDataset">
+		<div class="form-group">
+			<label for="institution">Institución:</label>
+			<select name="institution" id="institution" class="form-control" [(ngModel)]="dataset.institution_id" (change)="changeInstitution();" [class.error]="clases.institution_idDataset" (blur)="inputCorrecto('institution_idDataset')" required></select>
+			<a href="javascript:void(0)" class="text-primary" (click)="addNuevaInstitution();">La institución no aparece en la lista</a>
+			<p class="text-success" [hidden]="clases.msgInsercionInstitution">Institución insertada correctamente, ya puedes seleccionarla</p>
+		</div>
+		<div if="form-institution" [hidden]="formInstitution" class="row">
+			<div class="form-group col-sm-6">
+				<label for="name-institution">Nombre Institución:</label>
+				<input type="text" id="name-institution" name="name-institution" class="form-control" [(ngModel)]="institution.name" [class.error]="clases.nameInstitution" (blur)="inputCorrecto('nameInstitution');" required>
+			</div>
+			<div class="form-group col-sm-6">
+				<label for="country">País Institución:</label>
+				<input type="text" id="country" name="country" class="form-control" [(ngModel)]="institution.country" [class.error]="clases.countryInstitution" (blur)="inputCorrecto('countryInstitution');" required>
+			</div>
+			<div class="form-group col-sm-6">
+				<label for="city">Ciudad Institución:</label>
+				<input type="text" id="city" name="city" class="form-control" [(ngModel)]="institution.city">
+			</div>
+			<div class="form-group col-sm-6">
+				<label for="province">Provincia Institución:</label>
+				<input type="text" id="province" name="province" class="form-control" [(ngModel)]="institution.province">
+			</div>
+			<div class="form-group col-sm-4 col-sm-offset-4">
+				<p class="text-danger" [hidden]="clases.msgObligatoriosInstitution">Debes rellenar los campos obligatorios para enviar una institución</p>
+				<div class="alert aletr-danger" [hidden]="clases.msgCaracteres">Algún campo contiene caractéres no permitidos</div>
+				<button class="btn btn-primary" (click)="enviarInstitution();">Enviar Institución</button>
+				<a href="javascript:void(0)" class="btn" (click)="ocultarFormInstitution();">Cancelar</a>	
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="categoria-dataset">Categoría dataset:</label>
+			<select name="categoria-dataset" id="categoria-dataset" class="form-control" [(ngModel)]="dataset.category_id" [class.error]="clases.categoryDataset" (blur)="inputCorrecto('categoryDataset');" required></select>
+		</div>
+		<div class="form-group">
+			<label for="descripcion-dataset">Descripción dataset:</label>
+			<textarea name="descripcion-dataset" id="descripcion-dataset" cols="30" rows="10" class="form-control" [(ngModel)]="dataset.description" [class.error]="clases.descriptionDataset" (blur)="inputCorrecto('descriptionDataset');" required></textarea>
+		</div>
+		<div class="form-group">
+			<label for="uri-dataset">URI dataset:</label>
+			<input type="text" class="form-control" [(ngModel)]="dataset.uri_dataset" [class.error]="clases.uriDatasetDataset" (blur)="inputCorrecto('uriDatasetDataset');" required>
+		</div>
+		<div class="row">
+			<div class="form-group col-sm-4 col-sm-offset-4">
+				<p class="text-danger" [hidden]="clases.msgObligatoriosDataset">Debes rellenar los campos obligatorios para enviar el dataset</p>
+				<button class="btn btn-primary" (click)="enviarDataset();">Enviar Dataset</button>
+				<a href="javascript:void(0)" class="btn" (click)="ocultarFormDataset();">Cancelar</a>
+			</div>		
+		</div>
+	</div>
+	<p class="text-success" [hidden]="clases.msgInsercionDataset">Has insertado el Dataset correctamente, ya puedes seleccionarlo.</p>
+	<hr>
+	<p class="text-danger" [hidden]="clases.msgObligatoriosApp">Debes rellenar los campos obligatorios para enviar la app</p>
+	<button class="btn btn-primary" (click)="enviarForm();">Enviar App</button>
+	<a [routerLink]="['']" class="btn">Cancelar</a>
+</div>
+

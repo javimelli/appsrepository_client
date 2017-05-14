@@ -1,0 +1,19 @@
+<div class="form-group">
+	<div class="col-sm-6">
+		<label for="icono" class="">Icono:</label>
+		<input type="file" id="icono" name="icono" required class="form-control"
+	       (change)="onChange($event);"
+	       [disabled]="subida">
+		<p class="help-block">Elija la imagen de icono de su aplicación. Solo podrá subir una imagen</p>
+		<div class="alert alert-success" [hidden]="msgCorrecto"><p class="text-success">Icono subido correctamente</p></div>
+	</div>
+	<div class="col-sm-1">
+		<button class="btn btn-file" (click)="upload();" [disabled]="subida">Subir</button>
+	</div>
+	<div class="col-sm-1" [hidden]="msgCorrecto">
+		<a href="javascript:void(0)" class="thumbnail">
+			<img [src]="url" alt="">
+		</a>
+	</div>
+</div>
+

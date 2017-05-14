@@ -1,0 +1,39 @@
+<div class="form-group">
+	<div class="col-sm-6">
+		<label for="capturas" class="">Capturas:</label>
+		<input type="file" id="capturas" name="capturas" class="form-control" required multiple
+   			(change)="onChange($event);"
+			[disabled]="subida">
+		<p class="help-block">Elija las capturas de pantalla de su aplicación. Podrá subir hasta 5 capturas</p>
+		<div class="alert alert-success"  [hidden]="msgCorrecto"><p class="text-success">{{numFiles}} capturas de imágenes subidas correctamente</p></div>
+		<div class="alert alert-danger"  [hidden]="msgIncorrecto"><p class="text-error">Existe algún problema con la subida. Compruebe que el número de imágenes está permitido</p></div>
+	</div>
+	<div class="col-sm-1">
+		<button class="btn btn-file" (click)="upload();" [disabled]="subida">Subir</button>
+	</div>
+	<div class="col-sm-1" [hidden]="vision_thumbnails[0].vision">
+		<a href="javascript:void(0)" class="thumbnail">
+			<img [src]="vision_thumbnails[0].url" alt="">
+		</a>
+	</div>
+	<div class="col-sm-1" [hidden]="vision_thumbnails[1].vision">
+		<a href="javascript:void(0)" class="thumbnail">
+			<img [src]="vision_thumbnails[1].url" alt="">
+		</a>
+	</div>
+	<div class="col-sm-1" [hidden]="vision_thumbnails[2].vision">
+		<a href="javascript:void(0)" class="thumbnail">
+			<img [src]="vision_thumbnails[2].url" alt="">
+		</a>
+	</div>
+	<div class="col-sm-1" [hidden]="vision_thumbnails[3].vision">
+		<a href="javascript:void(0)" class="thumbnail">
+			<img [src]="vision_thumbnails[3].url" alt="">
+		</a>
+	</div>
+	<div class="col-sm-1" [hidden]="vision_thumbnails[4].vision">
+		<a href="javascript:void(0)" class="thumbnail">
+			<img [src]="vision_thumbnails[4].url" alt="">
+		</a>
+	</div>
+</div>

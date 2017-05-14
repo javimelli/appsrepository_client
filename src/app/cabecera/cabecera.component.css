@@ -1,0 +1,8 @@
+.enlace_login {
+	text-decoration: none;
+	color: #F11717;
+}
+
+.enlace_login:active {
+	color: #F11717;
+}
