@@ -1,5 +1,11 @@
-<p>inicio works!</p>
-<div *ngFor="let app of apps">{{app.title}}</div>
-<a [routerLink]="['app']">Añaddir app</a>
+<div class="container">
+	<p>inicio works!</p>
+	<div *ngFor="let app of apps">
+		{{app.title}}
+		<a [routerLink]="['app', app.id]">EDITAR</a>
+	</div>
+	<a *ngIf="user==true" [routerLink]="['app']">Añaddir app</a>
+	<a *ngIf="user==false" [routerLink]="['login']">Añaddir app</a>
+</div>
 <script>
 </script>

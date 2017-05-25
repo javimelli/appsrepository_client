@@ -9,8 +9,8 @@
 		<textarea name="descripcion" id="descripcion" class="form-control" cols="30" rows="10" [(ngModel)]="app.description" [class.error]="clases.descriptionApp" (blur)="inputCorrecto('descriptionApp')" required></textarea>
 	</div>
 	<div class="form-horizontal">
-		<icon [idFotos]="id_fotos"></icon>
-		<captures [idFotos]="id_fotos"></captures>
+		<icon [idFotos]="app.id_fotos"></icon>
+		<captures [idFotos]="app.id_fotos"></captures>
 	</div>
 	<div class="form-group">
 		<label for="url_web">URL Web:</label>
@@ -203,7 +203,7 @@
 	<p class="text-success" [hidden]="clases.msgInsercionDataset">Has insertado el Dataset correctamente, ya puedes seleccionarlo.</p>
 	<hr>
 	<p class="text-danger" [hidden]="clases.msgObligatoriosApp">Debes rellenar los campos obligatorios para enviar la app</p>
-	<button class="btn btn-primary" (click)="enviarForm();">Enviar App</button>
+	<button class="btn btn-primary" (click)="enviarForm();">Actualizar App</button>
 	<a [routerLink]="['']" class="btn">Cancelar</a>
 </div>
 

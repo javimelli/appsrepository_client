@@ -15,10 +15,26 @@ export class Dataset_appService {
 		return this.http.get(this.urlBase,options);
 	}
 
+	getDataset_appByApp(id){
+		console.log('Ejecutando servicio getDataset_appByApp');
+		let url = this.urlBase + "/app/" + id;
+		let headers = new Headers();
+		let options = new RequestOptions({ headers: headers, withCredentials: true});
+		return this.http.get(url,options);	
+	}
+
 	postDataset_app(dataset_app){
 		console.log('Ejecutando servicio post');
 		let headers = new Headers();
 		let options = new RequestOptions({ headers: headers, withCredentials: true});
 		return this.http.post(this.urlBase,dataset_app,options);
+	}
+
+	deleteByApp(id){
+		console.log('Ejecutando servicio deleteByApp');
+		let url = this.urlBase + "/" + id;
+		let headers = new Headers();
+		let options = new RequestOptions({ headers: headers, withCredentials: true});
+		return this.http.delete(url,options);	
 	}
 }

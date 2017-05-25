@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { CategoryService } from './../service/category.service';
 import { PlatformService } from './../service/platform.service';
 import { DataSetService } from './../service/dataset.service';
@@ -7,23 +8,26 @@ import { AppService } from './../service/app.service';
 import { App_categoryService } from './../service/app_category.service';
 import { App_PlatformService } from './../service/app_platform.service';
 import { Dataset_appService } from './../service/dataset_app.service';
+import { ImagesService } from './../service/images.service';
 import { SessionService } from './../service/session.service';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-
 
 declare var jQuery:any;
 declare var $:any;
 
 @Component({
-  selector: 'app-apps',
-  templateUrl: './apps.component.html',
-  styleUrls: ['./apps.component.css']
+  selector: 'edit-app',
+  templateUrl: './edit-app.component.html',
+  styleUrls: ['./edit-app.component.css']
 })
-export class AppsComponent implements OnInit {
+export class EditAppComponent implements OnInit {
 
-	private userSession = {"name": ''};
+	//Id de la app a modificar
+	private appId;
 
-	//Atributos para guardar la insformacion en peticiones Ajax
+	private userSession = {"name": '', "id": 9999};
+
+  	//Atributos para guardar la insformacion en peticiones Ajax
 	private categorias = [];
 	private plataformas = [];
 	private datasets = [];
@@ -34,10 +38,10 @@ export class AppsComponent implements OnInit {
 	private numCategorias = 2;//Empieza a contar a partir de la segunda categoria
 	private numPlataformas = 2;//Empieza a contar a partir de la segunda plataforma
 	private numDatasets = 2//Empiaza a contar a partir del segundo dataset
-	
+
 	//Es el id que se genera para cada usuario en un formulario
 	private id_fotos:any = 0;
-	
+
 	//Atributos para la vision de los formularios de dataset e institucion
 	private formDataset:boolean = true;
 	private formInstitution:boolean = true;
@@ -46,7 +50,7 @@ export class AppsComponent implements OnInit {
 	private categoriaAnidada = false;
 	private plataformaAnidada = false; 
 	private datasetAnidado = false;
-	
+
 	//Atributos para controlas la vision y los valores de los selects de mas
 	private vision_categorias = {
 		"categoria2": true,
@@ -168,7 +172,7 @@ export class AppsComponent implements OnInit {
 		"dataset_id": 9999
 	}
 	//---------------------------------------------------------------------------------------------------------
-	constructor(private categoryService:CategoryService, private platformService:PlatformService, private dataSetService:DataSetService, private institutionService:InstitutionService, private appService:AppService, private app_categoryService:App_categoryService, private app_PlatformService:App_PlatformService, private dataset_appService:Dataset_appService, private sessionService:SessionService, private router: Router) {
+	constructor(private categoryService:CategoryService, private platformService:PlatformService, private dataSetService:DataSetService, private institutionService:InstitutionService, private appService:AppService, private app_categoryService:App_categoryService, private app_PlatformService:App_PlatformService, private dataset_appService:Dataset_appService, private activatedRoute: ActivatedRoute, private imagesService:ImagesService, private sessionService:SessionService, private router: Router) {
 		this.sessionService.getUserSession().subscribe(
 			response => {
 				if(response.status == 204)
@@ -191,17 +195,19 @@ export class AppsComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.appId = this.activatedRoute.snapshot.params['id'];
+		console.log("Id de la app a modificar: "+this.appId);
+		this.cargarDatasets();
 		this.cargarPaises();
 		this.cargarIdiomas();
 		this.cargarCategorias();
 		this.cargarPlataformas();
-		this.cargarDatasets();
 		this.cargarInstituciones();
 		//Creamos el numero aleatorio para las fotogtradias
 		var aleatorio = Math.round(Math.random() * (9999 - 1000) + 1000);
 		var date = new Date();
 		this.id_fotos = date.getDate()+"_"+date.getMonth()+"_"+date.getFullYear()+"_"+date.getHours()+"_"+date.getMinutes()+"_"+date.getSeconds()+"_"+aleatorio;
-		this.app.id_fotos = this.id_fotos;
+		this.cargarDatos();
 		console.log(this.app.id_fotos);
 	}
 
@@ -242,6 +248,7 @@ export class AppsComponent implements OnInit {
 				for(let i=0; i<this.categorias.length; i++){
 					$("#categoria,#categoria-2,#categoria-3,#categoria-4,#categoria-5,#categoria-dataset").append('<option value="'+this.categorias[i].id+'">'+this.categorias[i].name+'</option>');
 				}
+				this.cargarCategoriasApp();
 			},
 			error => {
 
@@ -258,6 +265,7 @@ export class AppsComponent implements OnInit {
 				for(let i=0; i<this.plataformas.length; i++){
 					$("#plataforma,#plataforma-2,#plataforma-3,#plataforma-4,#plataforma-5").append('<option value="'+this.plataformas[i].id+'">'+this.plataformas[i].name+'</option>');
 				}
+				this.cargarPlataformasAdd();
 			},
 			error => {
 
@@ -299,9 +307,89 @@ export class AppsComponent implements OnInit {
 				for(let i=0; i<this.datasets.length; i++){
 					$("#dataset,#dataset-2,#dataset-3,#dataset-4,#dataset-5,#dataset-6,#dataset-7,#dataset-8,#dataset-9,#dataset-10").append('<option value="'+this.datasets[i].id+'">'+this.datasets[i].title+'</option>');
 				}
+				this.cargarDatasetsApp();
 			},
 			error => {
 				console.log('ERROR AL CARGAR LOS DATASETS');
+			}
+		);
+	}
+
+	public cargarDatos(){
+		//Cargamos los datos de la App
+		this.appService.getAppsById(this.appId).subscribe(
+			response => {
+				//Controlar que el usuario registrado es el dueño de la noticia
+				this.app = response.json();
+				if(this.app.user_id == this.userSession.id){
+					console.log(this.app);
+				}else{
+					this.router.navigate(['/']);
+				}
+			},
+			error => {
+				console.log("ERROR en la carga de la app");
+			}
+		);
+	}
+
+	public cargarCategoriasApp(){
+		//Cargamos los datos de las categorias
+		let apps_categorys = [];
+		this.app_categoryService.getApp_categorysByApp(this.appId).subscribe(
+			response => {
+				apps_categorys = response.json();
+				console.log(apps_categorys);
+				this.vision_categorias.categoria_1 = apps_categorys[0].id;
+				let numCategoria = 2;//Contamos desde la 2 porque la 1 lla cargamos antes del for
+				for(let i=1; i<apps_categorys.length; i++){
+					this.vision_categorias["categoria_"+numCategoria] = apps_categorys[i].id;
+					numCategoria++;
+					this.addCategoriaSelect();
+				}
+			},
+			error => {
+				console.log("ERROR al cargar las categorías");
+			}
+		);
+	}
+
+	public cargarPlataformasAdd(){
+		let apps_platforms = [];
+		this.app_PlatformService.getApp_platformByApp(this.appId).subscribe(
+			response => {
+				apps_platforms = response.json();
+				console.log(apps_platforms);
+				this.vision_plataformas.plataforma_1 = apps_platforms[0].id;
+				let numPlatform = 2;
+				for(let j=1; j<apps_platforms.length; j++){
+					this.vision_plataformas["plataforma_"+numPlatform] = apps_platforms[j].id;
+					numPlatform++;
+					this.addPlataformaSelect();
+				}
+			},
+			error => {
+				console.log("ERROR al cargar las plataformas");
+			}
+		);
+	}
+
+	public cargarDatasetsApp(){
+		let datasets_apps = [];
+		this.dataset_appService.getDataset_appByApp(this.appId).subscribe(
+			response => {
+				datasets_apps = response.json();
+				console.log(datasets_apps);
+				this.vision_datasets.dataset_1 = datasets_apps[0].id;
+				let numDataset = 2;
+				for(let n=1; n<datasets_apps.length; n++){
+					this.vision_datasets["dataset_"+numDataset] = datasets_apps[n].id;
+					numDataset++;
+					this.addDatasetSelect();
+				}
+			},
+			error => {
+				console.log("ERROR en la carga de los datasets");
 			}
 		);
 	}
@@ -548,7 +636,7 @@ export class AppsComponent implements OnInit {
 	//--------------------------------------------------------Envios de formularios---------------------------------------------------------------------------------
 
 	public enviarInstitution(){
-		//var pattWrite = /\w{1,45}/g;
+		var pattWrite = /\w{1,45}/g;
 		//VALIDACIONES
 
 		if(this.institution.name == ''){
@@ -676,73 +764,96 @@ export class AppsComponent implements OnInit {
 			var datasets = ["dataset_1","dataset_2","dataset_3","dataset_4","dataset_5","dataset_6","dataset_7","dataset_8","dataset_9","dataset_10"];
 
 			//appService
-			this.appService.postApp(this.app).subscribe(
+			this.appService.putApp(this.app,this.appId).subscribe(
 				response => {
-					let idApp = response.json();
-					console.log("Id app: "+idApp);
-					if(idApp != 9999){
-						console.log("SUCCESS inserción correcta");
-						//Recorremos las categorias, vemos si esta en el array de categorias y si su valor es distinto de 9999 
-						for(let categoria in this.vision_categorias){
-							//console.log(categoria+": "+this.vision_categorias[categoria]);
-							let categoriaVista = categoria.replace(/_/g,'');
-							//console.log(categoriaVista);
-							if(categorias.indexOf(categoria) != -1 && this.vision_categorias[categoria] != 9999){
-								if(this.vision_categorias[categoriaVista] == false || categoria == "categoria_1"){
-									console.log(categoria+" debe ser insertada, además "+categoriaVista+" es true");
-									this.app_category.app_id = idApp;
-									this.app_category.category_id = this.vision_categorias[categoria];
-									this.app_categoryService.postApp_category(this.app_category).subscribe(
-										response => {
-											console.log("Insertado app_category con éxito");
-										},
-										error => {
-											console.log("Error en la inserción de app_category");
+					let save = response.text();
+					console.log("Id app: "+save);
+					if(save == 'true'){
+						console.log("SUCCESS Actualización correcta");
+						//Borramos todos los registros con la app de categorías y después
+						this.app_categoryService.deleteByApp(this.appId).subscribe(
+							response => {
+								//Recorremos las categorias, vemos si esta en el array de categorias y si su valor es distinto de 9999 
+								for(let categoria in this.vision_categorias){
+									//console.log(categoria+": "+this.vision_categorias[categoria]);
+									let categoriaVista = categoria.replace(/_/g,'');
+									//console.log(categoriaVista);
+									if(categorias.indexOf(categoria) != -1 && this.vision_categorias[categoria] != 9999){
+										if(this.vision_categorias[categoriaVista] == false || categoria == "categoria_1"){
+											console.log(categoria+" debe ser insertada, además "+categoriaVista+" es true");
+											this.app_category.app_id = this.appId;
+											this.app_category.category_id = this.vision_categorias[categoria];
+											this.app_categoryService.postApp_category(this.app_category).subscribe(
+												response => {
+													console.log("Insertado app_category con éxito");
+												},
+												error => {
+													console.log("Error en la inserción de app_category");
+												}
+											);
 										}
-									);
+									}
 								}
+							},
+							error => {
+								console.log("ERROR en el borrado de app_categorys");
 							}
-						}
+						);
 						
-						//Recorremos las plataformas de la misma manera que las categorias			
-						for(let plataforma in this.vision_plataformas){
-							//console.log(plataforma+": "+this.vision_plataformas[plataforma]);
-							let plataformaVista = plataforma.replace(/_/g,'');
-							if(plataformas.indexOf(plataforma) != -1 && this.vision_plataformas[plataforma] != 9999){
-								if(this.vision_plataformas[plataformaVista] == false || plataforma == "plataforma_1"){
-									this.app_platform.app_id = idApp;
-									this.app_platform.platform_id = this.vision_plataformas[plataforma];
-									this.app_PlatformService.postApp_platform(this.app_platform).subscribe(
-										response => {
-											console.log("Insertdao app_platform con éxito");
-										},
-										error => {
-											console.log("Error en la inserción de app_platform");
+						this.app_PlatformService.deleteByApp(this.appId).subscribe(
+							response => {
+								//Recorremos las plataformas de la misma manera que las categorias			
+								for(let plataforma in this.vision_plataformas){
+									//console.log(plataforma+": "+this.vision_plataformas[plataforma]);
+									let plataformaVista = plataforma.replace(/_/g,'');
+									if(plataformas.indexOf(plataforma) != -1 && this.vision_plataformas[plataforma] != 9999){
+										if(this.vision_plataformas[plataformaVista] == false || plataforma == "plataforma_1"){
+											this.app_platform.app_id = this.appId;
+											this.app_platform.platform_id = this.vision_plataformas[plataforma];
+											this.app_PlatformService.postApp_platform(this.app_platform).subscribe(
+												response => {
+													console.log("Insertdao app_platform con éxito");
+												},
+												error => {
+													console.log("Error en la inserción de app_platform");
+												}
+											); 
 										}
-									); 
+									}
 								}
+							},
+							error => {
+								console.log("ERROR en el borrado de app_platforms");
 							}
-						}
+							
+						);
 
-						//Recorremos los datasetts igual que las categorias y las plataformas
-						for(let dataset in this.vision_datasets){
-							//console.log(dataset+": "+this.vision_datasets[dataset]);
-							let datasetVisto = dataset.replace(/_/g,'');
-							if(datasets.indexOf(dataset) != -1 && this.vision_datasets[dataset] != 9999){
-								if(this.vision_datasets[datasetVisto] == false || dataset == "dataset_1"){
-									this.dataset_app.app_id = idApp;
-									this.dataset_app.dataset_id = this.vision_datasets[dataset];
-									this.dataset_appService.postDataset_app(this.dataset_app).subscribe(
-										response => {
-											console.log("Insertado dataset_app con éxito");
-										},
-										error => {
-											console.log("Error en la inserción de dataset_app");
+						this.dataset_appService.deleteByApp(this.appId).subscribe(
+							response => {
+								//Recorremos los datasetts igual que las categorias y las plataformas
+								for(let dataset in this.vision_datasets){
+									//console.log(dataset+": "+this.vision_datasets[dataset]);
+									let datasetVisto = dataset.replace(/_/g,'');
+									if(datasets.indexOf(dataset) != -1 && this.vision_datasets[dataset] != 9999){
+										if(this.vision_datasets[datasetVisto] == false || dataset == "dataset_1"){
+											this.dataset_app.app_id = this.appId;
+											this.dataset_app.dataset_id = this.vision_datasets[dataset];
+											this.dataset_appService.postDataset_app(this.dataset_app).subscribe(
+												response => {
+													console.log("Insertado dataset_app con éxito");
+												},
+												error => {
+													console.log("Error en la inserción de dataset_app");
+												}
+											);
 										}
-									);
+									}
 								}
+							},
+							error => {
+								console.log("ERROR en el borrado de dataset_apps");
 							}
-						}
+						);
 					}else{
 						console.log("ERROR en la inserción con el id del usuario registrado");
 					}
@@ -753,4 +864,5 @@ export class AppsComponent implements OnInit {
 			);
 		}
 	}
+
 }

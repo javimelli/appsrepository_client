@@ -3,6 +3,37 @@
 	color: #F11717;
 }
 
-.enlace_login:active {
+.enlace_login:focus {
 	color: #F11717;
+}
+
+.enlace_login:hover {
+	border-bottom: 2px solid #F11717;
+	background-color: black !important;
+}
+
+.elemento_cabecera {
+	margin-top: 21px;
+}
+
+.elemento_cabecera:focus {
+	border-bottom: 2px solid #fff;
+	background-color: black !important;
+}
+
+.a_cabecera {
+	color: #fff;
+}
+
+.a_cabecera:hover {
+	border-bottom: 2px solid #fff;
+	background-color: black !important;
+}
+
+.titulo_cabecera {
+	margin-top: 21px;
+	color: #fff;
+	font-size: 28px;
+    /* text-align: left; */
+    font-family: sans-serif;
 }

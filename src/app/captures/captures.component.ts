@@ -17,6 +17,7 @@ export class CapturesComponent implements OnInit {
 	private numFiles:number = 0;
 	private files:any = '';//Guardaremos el array de files que se carguen en el input
 	private numSubidas = 0;
+	private numCaptures = 0;
 	/*
 		Guardaremos el file que queremos subir en este objeto FormData propio de javascript
 		que es como se espera recibir en el servidor. Del tipo MediaType.MULTIPART_FORMDATA.
@@ -27,16 +28,20 @@ export class CapturesComponent implements OnInit {
 	*/
 	private subida:boolean = false;
 
+	private clases = {
+		"btnEliminar": true
+	}
+
 	private msgCorrecto = true;
 	private msgIncorrecto = true;
 
 	//Mapa para controlar los thumbnails, tanto las urls como su vision
 	private vision_thumbnails = [
-		{ "url": "", "vision": true},
-		{ "url": "", "vision": true},
-		{ "url": "", "vision": true},
-		{ "url": "", "vision": true},
-		{ "url": "", "vision": true},
+		{ "url": "", "vision": true, "id": 9999, "urlTumbnail": ''},
+		{ "url": "", "vision": true, "id": 9999, "urlTumbnail": ''},
+		{ "url": "", "vision": true, "id": 9999, "urlTumbnail": ''},
+		{ "url": "", "vision": true, "id": 9999, "urlTumbnail": ''},
+		{ "url": "", "vision": true, "id": 9999, "urlTumbnail": ''},
 	]
 
 	private numImgSubidas = 0;
@@ -44,10 +49,22 @@ export class CapturesComponent implements OnInit {
 	@Input()
 	private idFotos:string;
 
+	private images = [];
+
+	@Input()
+	private edit;
+
+	ngOnChanges() {
+		console.log("Desde OnChanges captures: ",this.idFotos);
+		console.log("Desde OncChanges captures: ",this.images);
+		this.mostrarImagenes();
+	}
+
 	constructor(private uploadFiles:UploadFiles, private globals:Globals, private imagesService:ImagesService) { }
 
 	ngOnInit() {
-		console.log(this.idFotos);
+		console.log("Desde OnInit captures: ",this.idFotos);
+		console.log("Desde OnInit captures: ",this.images);
 	}
 
 	/*
@@ -64,6 +81,35 @@ export class CapturesComponent implements OnInit {
 		*/
 		this.files = event.srcElement.files;
 		console.log(this.files);
+	}
+
+	mostrarImagenes(){
+		this.imagesService.getImagesById_fotos(this.idFotos).subscribe(
+			response => {
+				this.images = response.json();
+				if(this.images.length > 0){
+					this.clases.btnEliminar = false;
+					for(let i=0; i<this.images.length; i++){
+						if(this.images[i].type == 'capture'){
+							this.vision_thumbnails[this.numCaptures].vision = false;
+							this.vision_thumbnails[this.numCaptures].url = this.globals.HOST + this.images[i].url;
+							this.vision_thumbnails[this.numCaptures].id = this.images[i].id;
+							this.vision_thumbnails[this.numCaptures].urlTumbnail = this.images[i].url;
+							this.numCaptures++;
+						}
+					}
+					if(this.numCaptures == 5){
+						this.subida = true;
+					}
+					this.numFiles = this.numCaptures;
+				}else{
+					
+				}
+			},
+			error => {
+
+		  	}
+		);
 	}
 
 	/*
@@ -87,9 +133,32 @@ export class CapturesComponent implements OnInit {
 					en el parámetro @FormData del sevidor. Por últimno realizamos una petición
 					ajax por cada fichero.
 				*/
-				for(let num=0; num<this.vision_thumbnails.length-1; num++){
-					this.vision_thumbnails[num].vision = true;
-				}
+				this.imagesService.getImagesById_fotos(this.idFotos).subscribe(
+					response => {
+						this.numCaptures = 0;
+						this.images = response.json();
+						if(this.images.length > 0){
+							this.clases.btnEliminar = false;
+							for(let i=0; i<this.images.length; i++){
+								if(this.images[i].type == 'capture'){
+									this.vision_thumbnails[this.numCaptures].vision = false;
+									this.vision_thumbnails[this.numCaptures].url = this.globals.HOST + this.images[i].url;
+									this.vision_thumbnails[this.numCaptures].id = this.images[i].id;
+									this.vision_thumbnails[this.numCaptures].urlTumbnail = this.images[i].url;
+									this.numCaptures++;
+								}
+							}
+							if(this.numCaptures == 5){
+								this.subida = true;
+							}
+						}else{
+							
+						}
+					},
+					error => {
+
+				  	}
+				);
 				for(let i=0; i<this.files.length; i++){
 					//console.log(this.files[i]);
 					this.formData = new FormData();
@@ -102,8 +171,8 @@ export class CapturesComponent implements OnInit {
 							this.msgIncorrecto = true;
 							url = response.text();
 				          	url = url.replace(/\\/g, "/");
-	          				url = this.globals.HOST + url;
-							this.vision_thumbnails[i] = { "url": url, "vision": false};
+	          				//url = this.globals.HOST + url;
+							this.vision_thumbnails[i] = { "url": this.globals.HOST + url, "vision": false, "id": 9999, "urlTumbnail": url};
 							this.imagesService.postImages({
 					            "id_fotos": this.idFotos,
 					            "url": url,
@@ -111,6 +180,7 @@ export class CapturesComponent implements OnInit {
 				          	}).subscribe(
 					            response => {
 					              console.log(response.text());
+					              this.vision_thumbnails[i].id = response.json();
 					            },
 					            error => {
 
@@ -133,4 +203,29 @@ export class CapturesComponent implements OnInit {
 			this.msgCorrecto = true;
 		}
 	}
+
+	eliminarImage(pos){
+		this.imagesService.deleteImages(this.vision_thumbnails[pos].id).subscribe(
+			response => {
+				this.subida = false;
+				this.vision_thumbnails[pos].vision = true;
+			},
+			error => {
+				console.log("ERROR en el borrado de la imagen");
+			}
+	    );
+	    let urlDelete = this.vision_thumbnails[pos].urlTumbnail.replace(/\//g,"\\");
+	    this.uploadFiles.deleteFiles(urlDelete).subscribe(
+			response => {
+				console.log("Imagen eliminada");
+			},
+			error => {
+				console.log("");
+			}  
+		);
+		this.numFiles = this.numFiles - 1;
+		if(this.numFiles == 0){
+			this.msgCorrecto = true;
+		}
+  	}
 }

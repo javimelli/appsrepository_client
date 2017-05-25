@@ -15,10 +15,26 @@ export class App_PlatformService {
 		return this.http.get(this.urlBase,options);
 	}
 
+	getApp_platformByApp(id){
+		console.log('Ejecutando servicio getApp_platformByApp');
+		let url = this.urlBase + "/app/" + id;
+		let headers = new Headers();
+		let options = new RequestOptions({ headers: headers, withCredentials: true});
+		return this.http.get(url,options);	
+	}
+
 	postApp_platform(app_platform){
 		console.log('Ejecutando servicio postApp_platform');
 		let headers = new Headers();
 		let options = new RequestOptions({ headers: headers, withCredentials: true});
 		return this.http.post(this.urlBase,app_platform,options);
+	}
+
+	deleteByApp(id){
+		console.log('Ejecutando servicio deleteByApp');
+		let url = this.urlBase + "/" + id;
+		let headers = new Headers();
+		let options = new RequestOptions({ headers: headers, withCredentials: true});
+		return this.http.delete(url,options);	
 	}
 }

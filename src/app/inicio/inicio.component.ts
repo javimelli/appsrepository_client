@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit} from '@angular/core';
 import { HttpModule, JsonpModule, Headers } from '@angular/http';
 import { AppService } from './../service/app.service';
+import { SessionService } from './../service/session.service';
 
 @Component({
   selector: 'inicio',
@@ -11,7 +12,24 @@ export class InicioComponent implements OnInit,AfterViewInit {
   
   private apps = [];
 
-  constructor(private appservice:AppService) { }
+  private userSession = {"name": ''};
+  private user:boolean = false;
+
+  constructor(private appservice:AppService, private sessionService:SessionService) { 
+    this.sessionService.getUserSession().subscribe(
+      response => {
+        if(response.status != 204)
+          this.userSession = response.json();
+        if(response.status == 200 && this.userSession.name != ''){
+          console.log(this.userSession);
+          this.user = true;
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
 
   ngOnChanges(){}
 

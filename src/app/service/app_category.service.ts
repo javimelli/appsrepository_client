@@ -14,11 +14,26 @@ export class App_categoryService {
 		let options = new RequestOptions({ headers: headers, withCredentials: true});
 		return this.http.get(this.urlBase,options);
 	}
+	getApp_categorysByApp(id){
+		console.log('Ejecutando servicio getApp_categorysByApp');
+		let url = this.urlBase + "/" + id;
+		let headers = new Headers();
+		let options = new RequestOptions({ headers: headers, withCredentials: true});
+		return this.http.get(url,options);
+	}
 
 	postApp_category(app_category){
 		console.log('Ejecutando servicio post');
 		let headers = new Headers();
 		let options = new RequestOptions({ headers: headers, withCredentials: true});
 		return this.http.post(this.urlBase,app_category,options);
+	}
+
+	deleteByApp(id){
+		console.log('Ejecutando servicio deleteByApp');
+		let url = this.urlBase + "/" + id;
+		let headers = new Headers();
+		let options = new RequestOptions({ headers: headers, withCredentials: true});
+		return this.http.delete(url,options);
 	}
 }

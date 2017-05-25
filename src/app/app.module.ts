@@ -15,6 +15,7 @@ import { InicioComponent } from './inicio/inicio.component';
 import { AppsComponent } from './apps/apps.component';
 import { IconComponent } from './icon/icon.component';
 import { CapturesComponent } from './captures/captures.component';
+import { EditAppComponent } from './edit-app/edit-app.component';
 
 //SERVICIOS
 import { SessionService } from './service/session.service';
@@ -39,7 +40,8 @@ import { ImagesService } from './service/images.service';
     InicioComponent,
     AppsComponent,
     IconComponent,
-    CapturesComponent
+    CapturesComponent,
+    EditAppComponent
   ],
   imports: [
     BrowserModule,
