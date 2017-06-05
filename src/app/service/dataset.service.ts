@@ -15,6 +15,14 @@ export class DataSetService {
 		return this.http.get(this.urlBase,options);
 	}
 
+	getDatasetsByInstitution(id){
+		let url = this.urlBase + "/institution/" + id;
+		console.log('Ejecutando servicio getDatasets');
+		let headers = new Headers();
+		let options = new RequestOptions({ headers: headers, withCredentials: true});
+		return this.http.get(url,options);
+	}
+
 	postDataset(dataset){
 		console.log('Ejecutando post Datasets');
 		let headers = new Headers();

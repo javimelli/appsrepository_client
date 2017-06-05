@@ -16,6 +16,9 @@ import { AppsComponent } from './apps/apps.component';
 import { IconComponent } from './icon/icon.component';
 import { CapturesComponent } from './captures/captures.component';
 import { EditAppComponent } from './edit-app/edit-app.component';
+import { DatasetsComponent } from './datasets/datasets.component';
+import { AppDetalleComponent } from './app-detalle/app-detalle.component';
+import { DatasetDetalleComponent } from './dataset-detalle/dataset-detalle.component';
 
 //SERVICIOS
 import { SessionService } from './service/session.service';
@@ -30,6 +33,10 @@ import { App_categoryService } from './service/app_category.service';
 import { App_PlatformService } from './service/app_platform.service';
 import { Dataset_appService } from './service/dataset_app.service';
 import { ImagesService } from './service/images.service';
+import { FiltrosService } from './service/filtros.service';
+import { Vote_appService } from './service/vote_app.service';
+import { Funcs } from './service/funcs.service';
+import { UserService } from './service/user.service';
 
 @NgModule({
   declarations: [
@@ -41,7 +48,10 @@ import { ImagesService } from './service/images.service';
     AppsComponent,
     IconComponent,
     CapturesComponent,
-    EditAppComponent
+    EditAppComponent,
+    DatasetsComponent,
+    AppDetalleComponent,
+    DatasetDetalleComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +60,7 @@ import { ImagesService } from './service/images.service';
     routing,
     Ng2UploaderModule
   ],
-  providers: [SessionService,CookiesService,AppService,UploadFiles,CategoryService,PlatformService,DataSetService,InstitutionService,App_categoryService,App_PlatformService,Dataset_appService,ImagesService],
+  providers: [SessionService,CookiesService,AppService,UploadFiles,CategoryService,PlatformService,DataSetService,InstitutionService,App_categoryService,App_PlatformService,Dataset_appService,ImagesService,FiltrosService,Vote_appService,Funcs,UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

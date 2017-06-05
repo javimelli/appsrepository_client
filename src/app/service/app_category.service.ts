@@ -22,6 +22,22 @@ export class App_categoryService {
 		return this.http.get(url,options);
 	}
 
+	getAppByCategory(id){
+		console.log('Ejecutando servicio getApp_categorysByApp');
+		let url = this.urlBase + "/category/" + id;
+		let headers = new Headers();
+		let options = new RequestOptions({ headers: headers, withCredentials: true});
+		return this.http.get(url,options);
+	}
+
+	getAppByCategoryAndCountry(id,country){
+		console.log('Ejecutando servicio getAppByCategoryAndCountry');
+		let url = this.urlBase + "/category/" + id + "/pais/" + country;
+		let headers = new Headers();
+		let options = new RequestOptions({ headers: headers, withCredentials: true});
+		return this.http.get(url,options);
+	}
+
 	postApp_category(app_category){
 		console.log('Ejecutando servicio post');
 		let headers = new Headers();

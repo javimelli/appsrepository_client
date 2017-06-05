@@ -9,6 +9,7 @@ import { App_PlatformService } from './../service/app_platform.service';
 import { Dataset_appService } from './../service/dataset_app.service';
 import { SessionService } from './../service/session.service';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Globals } from './../app.global';
 
 
 declare var jQuery:any;
@@ -16,6 +17,7 @@ declare var $:any;
 
 @Component({
   selector: 'app-apps',
+  providers: [ Globals ],
   templateUrl: './apps.component.html',
   styleUrls: ['./apps.component.css']
 })
@@ -168,7 +170,7 @@ export class AppsComponent implements OnInit {
 		"dataset_id": 9999
 	}
 	//---------------------------------------------------------------------------------------------------------
-	constructor(private categoryService:CategoryService, private platformService:PlatformService, private dataSetService:DataSetService, private institutionService:InstitutionService, private appService:AppService, private app_categoryService:App_categoryService, private app_PlatformService:App_PlatformService, private dataset_appService:Dataset_appService, private sessionService:SessionService, private router: Router) {
+	constructor(private categoryService:CategoryService, private platformService:PlatformService, private dataSetService:DataSetService, private institutionService:InstitutionService, private appService:AppService, private app_categoryService:App_categoryService, private app_PlatformService:App_PlatformService, private dataset_appService:Dataset_appService, private sessionService:SessionService, private router: Router, private globals:Globals) {
 		this.sessionService.getUserSession().subscribe(
 			response => {
 				if(response.status == 204)
@@ -743,6 +745,7 @@ export class AppsComponent implements OnInit {
 								}
 							}
 						}
+						//window.location.replace(this.globals.HOST_CLIENTE);
 					}else{
 						console.log("ERROR en la inserción con el id del usuario registrado");
 					}

@@ -1,11 +1,88 @@
 <div class="container">
-	<p>inicio works!</p>
-	<div *ngFor="let app of apps">
-		{{app.title}}
-		<a [routerLink]="['app', app.id]">EDITAR</a>
+	<div class="row">
+		<div class="col-sm-3 panel-izq">
+			<p class="titutlo_categorias">Categorías</p>
+			<ul>
+				<li *ngFor="let category of categorias" data-id="{{category.id}}" class="categorias" (click)="enviarFiltros(0,category.id,category.name)">{{category.name}}</li>
+			</ul>
+			<hr>
+			<p class="titutlo_categorias">País</p>
+			<div class="input-group busqPais">
+				<input class="form-control" type="text" [(ngModel)]="filtros.pais">
+				<span class="input-group-addon ir" (click)="enviarFiltros(2,0,0);">Ir</span>
+			</div>
+		</div>
+		<div class="col-sm-9 centro">
+			<div class="row filtros_busq">
+				<div class="col-sm-4">
+					<span [class.hidden]="hayCategoria" class="label label-default">
+						{{nombre_categoria}}
+						<span class="glyphicon glyphicon-remove noCategoria" (click)="enviarFiltros(1,0,0)"></span>
+					</span>
+					<span [class.hidden]="hayPais" class="label label-default label">
+						{{nombre_pais}}
+						<span class="glyphicon glyphicon-remove noPais" (click)="enviarFiltros(3,0,0)"></span>
+					</span>
+				</div>
+				<!--<div class="col-sm-2">
+					
+				</div>-->
+				<div class="col-sm-5 col-sm-offset-3">
+					<div class="input-group">
+						<input type="text" class="form-control" placeholder="Busca apps por títulos, descripción" [(ngModel)]="texto" (change)="busqueda()">
+						<span class="input-group-addon ir" (click)="busqueda()">Ir</span>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-4 col-sm-offset-8 ordenar">
+					<div class="row">
+						<div class="col-sm-2">
+							<button class="btn btn-default" aria-label="Left Align" (click)="cambiaOrden()">
+								<span class="glyphicon" [class.glyphicon-sort-by-attributes-alt]="descendente" [class.glyphicon-sort-by-attributes]="ascendente"></span>
+							</button>
+						</div>
+						<div class="col-sm-10">
+							<select name="orden" id="orden" class="form-control" (change)="enviarFiltros(4,$event.target.value,0);" [(ngModel)]="ordenListado">
+								<option value="eliminar">--Seleccione orden--</option>
+								<option value="visitas">número de visitas</option>
+								<option value="media">Media de votaciones</option>
+								<option value="precio">precio</option>
+							</select>
+						</div>
+					</div>
+					<!--<span class="glyphicon glyphicon-sort-by-attributes"></span>
+					<span class="glyphicon glyphicon-sort-by-attributes-alt"></span>-->
+				</div>
+				
+				<div *ngFor="let app of apps" class="col-sm-4">
+					<a class="" [routerLink]="['app-detalle', app.id]">
+						<div class="thumbnail  elemento-app">
+							<span class="badge media">{{app.average}}</span>
+							<img [src]="iconos[app.id_fotos]" alt=""  data-id-fotos="app.id_fotos" class="img-icono">
+							<div class="caption">
+								<h5>{{app.title}}</h5>
+								<div class="description-app">{{app.description}}</div>
+								<!--<a [routerLink]="['app', app.id]">EDITAR</a>-->
+								
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2 col-sm-offset-10">
+					<a *ngIf="user==true" class="btn btn-primary" [routerLink]="['app']">Añaddir app</a>
+					<a *ngIf="user==false" class="btn btn-primary" [routerLink]="['login']">Añaddir app</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2 col-sm-offset-5">
+					<button class="btn" (click)="verMas()" [class.hidden]="hayMas">Ver más</button>
+				</div>
+			</div>
+		</div>
 	</div>
-	<a *ngIf="user==true" [routerLink]="['app']">Añaddir app</a>
-	<a *ngIf="user==false" [routerLink]="['login']">Añaddir app</a>
 </div>
 <script>
 </script>

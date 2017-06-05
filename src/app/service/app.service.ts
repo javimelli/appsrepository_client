@@ -23,6 +23,22 @@ export class AppService {
 		return this.http.get(url,options);
 	}
 
+	getAppsByLimit(num, init){
+		console.log('Ejecutando servicio getAppsByCountry');
+		let url = this.urlBase + "/limit/" + num + "/" + init;
+		let headers = new Headers();
+		let options = new RequestOptions({ headers: headers, withCredentials: true});
+		return this.http.get(url,options);
+	}
+
+	getAppsByCountry(country){
+		console.log('Ejecutando servicio getAppsByCountry');
+		let url = this.urlBase + "/country/" + country;
+		let headers = new Headers();
+		let options = new RequestOptions({ headers: headers, withCredentials: true});
+		return this.http.get(url,options);
+	}
+
 	putApp(app,id){
 		console.log('Ejecutando servicio putApp');
 		let url = this.urlBase + "/" + id;

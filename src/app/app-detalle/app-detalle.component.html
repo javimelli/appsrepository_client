@@ -1,0 +1,13 @@
+<div class="container">
+	<div class="row">
+		<div class="col-sm-10 col-sm-offset-1 titulo">{{app.title}}</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-10 col-sm-offset-1 datos_importantes">
+			<p class="text-muted">Subida por: <strong>{{owner.username}}</strong></p>
+		</div>
+	</div>
+	<div class="row">
+		<span *ngFor="let categoria of categorias" class="label label-success">categoria.name</span>
+	</div>
+</div>
