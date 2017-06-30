@@ -125,3 +125,9 @@ hr {
     right: 28px;
     /*background-color: darkorange;*/
 }
+
+.media_vistas {
+	position: absolute;
+	top: 261px;
+	left: 28px;
+}

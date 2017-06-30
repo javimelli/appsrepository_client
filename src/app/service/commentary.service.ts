@@ -2,40 +2,41 @@ import { Injectable } from '@angular/core';
 import { Http, Response, Headers, Request, RequestOptions } from '@angular/http';
 
 @Injectable()
-export class Vote_appService {
+export class CommentaryService {
 
-	private urlBase:string = 'http://localhost:8080/ApiRestRepositorio/resources/votes_apps';
+	private urlBase:string = 'http://localhost:8080/ApiRestRepositorio/resources/commentarys';
 
 	constructor(private http:Http){}
 
-	getVoteByUser(id){
+	getCommentsByApp(id){
 		console.log('Ejecutando servicio getVoteByUser');
-		let url = this.urlBase + "/user/" + id;
-		let headers = new Headers();
-		let options = new RequestOptions({ headers: headers, withCredentials: true});
-		return this.http.get(url,options);
-	}	
-	
-	getAverageByApp(id){
-		console.log('Ejecutando servicio getAverageByApp');
-		let url = this.urlBase + "/averageVotes/" + id;
+		let url = this.urlBase + "/app/" + id;
 		let headers = new Headers();
 		let options = new RequestOptions({ headers: headers, withCredentials: true});
 		return this.http.get(url,options);
 	}
 
-	putVoteApp(voto, id_user, id_app){
-		console.log('Ejecutando servicio putVoteApp');
-		let url = this.urlBase + "/" + id_user + "/" + id_app;
+	putCommentary(comentario){
+		let url = this.urlBase + "/" + comentario.id;
+		console.log('Ejecutando servicio postCommentary');
 		let headers = new Headers();
 		let options = new RequestOptions({ headers: headers, withCredentials: true});
-		return this.http.put(url,voto,options);		
+		return this.http.put(url,comentario,options);
 	}
 
-	postVoteApp(voto){
-		console.log('Ejecutando servicio postVoteApp');
+	postCommentary(comentario){
+		console.log('Ejecutando servicio postCommentary');
 		let headers = new Headers();
 		let options = new RequestOptions({ headers: headers, withCredentials: true});
-		return this.http.post(this.urlBase,voto,options);	
+		return this.http.post(this.urlBase,comentario,options);
 	}
+
+	deleteCommentary(id){
+		let url = this.urlBase + "/" + id;
+		console.log('Ejecutando servicio postCommentary');
+		let headers = new Headers();
+		let options = new RequestOptions({ headers: headers, withCredentials: true});
+		return this.http.delete(url,options);
+	}
+
 }

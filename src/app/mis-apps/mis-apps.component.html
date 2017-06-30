@@ -1,3 +1,24 @@
-<p>
-  mis-apps works!
-</p>
+<div class="container">
+	<div class="col-sm-12 contenedor">
+		<div class="panel panel-default">
+			<div class="panel-heading titulo">Mis Apps</div>
+			  <div class="panel-body">
+			    <p>Listado con tus apps, aquí podrás elegir una app y editar sus datos.</p>
+			  </div>
+			  <table class="table">
+			  	<thead>
+			  		<tr>
+			  			<th>Título</th>
+				  		<th>Editar</th>
+		  			</tr>
+			  	</thead>
+			  	<tbody>
+			  		<tr *ngFor="let app of apps">
+			  			<th>{{app.title}}</th>
+			  			<th><a href="javascript:void(0);" [routerLink]="['/app', app.id]"><span class="glyphicon glyphicon-pencil"></span></a></th>
+			  		</tr>
+			  	</tbody>
+			  </table>
+		</div>
+	</div>
+</div>

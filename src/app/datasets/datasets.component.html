@@ -43,7 +43,7 @@
 			</div>
 			<div class="row">
 				<div *ngFor="let dataset of datasets" class="col-sm-10 col-sm-offset-1 elemento_dataset">
-					<a class="" [routerLink]="['dataset-detalle', dataset.id]">
+					<a class="" [routerLink]="['/dataset-detalle', dataset.id]">
 						<div class="titulo_dataset">
 							{{dataset.title}}
 							<div class="localizacion">{{dataset.country}}</div>

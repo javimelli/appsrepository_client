@@ -23,6 +23,14 @@ export class Dataset_appService {
 		return this.http.get(url,options);	
 	}
 
+	getDataset_appByDataset(id){
+		console.log('Ejecutando servicio getDataset_appByApp');
+		let url = this.urlBase + "/dataset/" + id;
+		let headers = new Headers();
+		let options = new RequestOptions({ headers: headers, withCredentials: true});
+		return this.http.get(url,options);	
+	}
+
 	postDataset_app(dataset_app){
 		console.log('Ejecutando servicio post');
 		let headers = new Headers();

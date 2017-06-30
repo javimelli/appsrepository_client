@@ -1,0 +1,23 @@
+.titulo {
+	font-size: 28px;
+    font-weight: 700;
+    margin-top: 48px;
+}
+
+.datos_importantes {
+	margin-top: 28px;
+	background-color: #F0F0F0;
+}
+
+.datos_importantes div {
+    background-color: #F0F0F0;
+    padding: 18px;
+}
+
+strong {
+    font-size: 15px;
+}
+
+.elemento_app {
+    display: block;
+}

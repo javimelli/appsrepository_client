@@ -1,13 +1,96 @@
 <div class="container">
 	<div class="row">
-		<div class="col-sm-10 col-sm-offset-1 titulo">{{app.title}}</div>
+		<div class="col-sm-12 titulo">{{app.title}}</div>
 	</div>
 	<div class="row">
-		<div class="col-sm-10 col-sm-offset-1 datos_importantes">
-			<p class="text-muted">Subida por: <strong>{{owner.username}}</strong></p>
+		<div class="col-sm-12">
+			<p class="text-muted">Subida por: <strong><a  [routerLink]="['/vista-usuario', owner.id]">{{owner.username}}</a></strong> en la fecha: {{app.date}} a las {{app.time}}</p>
 		</div>
 	</div>
 	<div class="row">
-		<span *ngFor="let categoria of categorias" class="label label-success">categoria.name</span>
+		<div class="col-sm-12">
+			<span *ngFor="let categoria of categorias" class="label label-success">{{categoria.name}}</span>
+		</div>
+	</div>
+	<div class="row datos_importantes">
+		<div class="col-sm-10">
+			<p *ngIf="app.country != ''"><strong>País: </strong>{{app.country}}</p>
+			<p *ngIf="app.language != ''"><strong>Idioma: </strong>{{app.language}}</p>
+			<p *ngIf="app.url_video != ''"><strong>URL vídeo: </strong><a [href]="app.url_video">{{app.url_video}}</a></p>
+			<p *ngIf="app.url_web != ''"><strong>URL web: </strong><a [href]="app.url_web">{{app.url_web}}</a></p>
+			<p *ngIf="app.price == 0"><strong>Precio:</strong> Gratis</p>
+			<p *ngIf="app.price != 0"><strong>Precio:</strong> {{app.price}}€</p>
+			<p *ngIf="app.version != 0"><strong>Versión:</strong> {{app.version}}</p>
+			<p><strong>Plataformas: </strong></p>
+			<p><span *ngFor="let plataforma of plataformas" class="label label-info">{{plataforma.name}}</span></p>
+			<p><strong>Conjuntos De Datos: </strong></p>
+			<p><a *ngFor="let dataset of datasets" [routerLink]="['/dataset-detalle', dataset.id]" class="elemento_dataset" href="javascript:void(0);">{{dataset.title}}</a></p>
+		</div>
+		<div class="col-sm-2 voto">
+			<p><strong>Vota esta App:</strong></p>
+			<div class="radio radio_votos">
+				<input type="radio" name="votos" value="1" [(ngModel)]="voto.value">1
+			</div>
+			<div class="radio radio_votos">
+				<input type="radio" name="votos" value="2" [(ngModel)]="voto.value">2
+			</div>
+			<div class="radio radio_votos">
+				<input type="radio" name="votos" value="3" [(ngModel)]="voto.value">3
+			</div>
+			<div class="radio radio_votos">
+				<input type="radio" name="votos" value="4" [(ngModel)]="voto.value">4
+			</div>
+			<div class="radio radio_votos">
+				<input type="radio" name="votos" value="5" [(ngModel)]="voto.value">5
+			</div>
+			<p class="bg-success" [hidden]="actualizada">Voto actualizado</p>
+			<p class="bg-success" [hidden]="votada">App votada</p>
+			<button *ngIf="userSession.name != ''" class="btn btn-primary" (click)="votar();">Enviar voto</button>
+			<a *ngIf="userSession.name == ''" href="javascript:void(0)" [routerLink]="['/login']" class="btn btn-primary">Enviar voto</a>
+		</div>
+	</div>
+	<div class="row datos_importantes">
+		<div class="col-sm-12">
+			<p><strong>Descripción:</strong></p>
+			{{app.description}}
+		</div>
+	</div>
+	<div class="row datos_importantes">
+		<div class="col-sm-12">
+			<p><strong>Capturas:</strong></p>
+			<div *ngFor="let captura of capturas" class="col-sm-2">
+				<a href="javascript:void(0)" class="thumbnail">
+					<img [src]="captura.url_thumbnail" alt="">
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="row datos_importantes">
+		<div class="col-sm-12">
+			<p><strong>Comentarios</strong></p>
+			<textarea name="comentario" id="comentario" cols="30" rows="4" class="comentario" placeholder="Escribe aquí tu comentario" [(ngModel)]="comentario.text"></textarea>
+		</div>
+		<div class="col-sm-2 col-sm-offset-5">
+			<p class="btn btn-primary" (click)="enviarComentario()">Enviar comentario</p>
+		</div>
+		<div class="col-sm-12">
+			<p class="text-info text-lista-commentarios"><ins>Lista de comentarios</ins></p>
+			<div *ngFor="let comentario of comentarios" class="bloque_comentario">
+				<p class="text-muted info_comment">
+					<img [src]="comentario.url_img" alt="" class="img-rounded img_user" *ngIf="comentario.url_img != ''">
+					<img src="../assets/Login.PNG" alt="" class="img-rounded img_user" *ngIf="comentario.url_img == ''">
+					Escrito por el usuario <a  [routerLink]="['/vista-usuario', owner.id]"><strong>{{comentario.username}}</strong></a> el día {{comentario.date}} a la hora {{comentario.time}}</p>
+				<textarea name="comentario_user" id="comentario_user" cols="30" rows="4" class="comentario" [disabled]="comentario.editar" [(ngModel)]="comentario.text">{{comentario.text}}</textarea>
+				<div class="anexo_comentario">
+					<button *ngIf="comentario.editor" class="btn" (click)="editarCommentario(comentario);">Editar</button>
+					<button *ngIf="comentario.editor" class="btn" (click)="borrarComentario(comentario.id)">Borrar</button>
+					<button *ngIf="userSession.name!=''" class="btn btn-success btn_vote_comment" (click)="votarComentario(comentario.id,1);"><span class="glyphicon glyphicon-thumbs-up"></span> ({{comentario.positive}})</button>
+					<button *ngIf="userSession.name!=''" class="btn btn-danger btn_vote_comment" (click)="votarComentario(comentario.id,0);"><span class="glyphicon glyphicon-thumbs-down"></span> ({{comentario.negative}})</button>
+					<a *ngIf="userSession.name==''" [routerLink]="['/login']" class="btn btn-success btn_vote_comment"><span class="glyphicon glyphicon-thumbs-up"></span> ({{comentario.positive}})</a>
+					<a *ngIf="userSession.name==''" [routerLink]="['/login']" class="btn btn-danger btn_vote_comment"><span class="glyphicon glyphicon-thumbs-down"></span> ({{comentario.negative}})</a>
+					<button class="btn btn-primary" *ngIf="!comentario.editar" (click)="actualizarComentario(comentario)">Actualizar comentario</button>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>

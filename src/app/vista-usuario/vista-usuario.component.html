@@ -1,0 +1,38 @@
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12 titulo center">{{user.username}}</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12 center">
+			<p class="text-muted">{{user.name}} {{user.last_name1}} {{last_name2}}</p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12 center">
+			<img [src]="user.foto" alt="" *ngIf="user.foto != undefined" class="img_user">
+			<img src="../assets/Login.PNG" alt="" *ngIf="user.foto == undefined" class="img_user">
+		</div>
+	</div>
+	<div class="row datos_importantes">
+		<div class="col-sm-10">
+			<p *ngIf="user.tlf != ''"><strong>Teléfono: </strong>{{user.tlf}}</p>
+			<p *ngIf="user.url_web != ''"><strong>Url web: </strong>{{user.url_web}}</p>
+			<p *ngIf="user.email != ''"><strong>Email: </strong>{{user.email}}</p>
+			<p *ngIf="user.country != ''"><strong>País: </strong>{{user.email}}</p>
+			<p *ngIf="user.tlf != ''"><strong>Teléfono: </strong>{{user.tlf}}</p>
+		</div>
+	</div>
+	<div class="row datos_importantes">
+		<div class="col-sm-10">
+			<p><strong>Conjuntos De Datos: </strong></p>
+			<p><a *ngFor="let dataset of datasets" [routerLink]="['/dataset-detalle', dataset.id]" class="elemento_dataset" href="javascript:void(0);">{{dataset.title}}</a></p>
+		</div>
+	</div>
+
+	<div class="row datos_importantes">
+		<div class="col-sm-10">
+			<p><strong>Apps: </strong></p>
+			<p><a *ngFor="let app of apps" [routerLink]="['/app-detalle', app.id]" class="elemento_dataset" href="javascript:void(0);">{{app.title}}</a></p>
+		</div>
+	</div>
+</div>

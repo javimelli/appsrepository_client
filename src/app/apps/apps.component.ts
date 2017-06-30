@@ -24,6 +24,7 @@ declare var $:any;
 export class AppsComponent implements OnInit {
 
 	private userSession = {"name": ''};
+	private insertada = true;
 
 	//Atributos para guardar la insformacion en peticiones Ajax
 	private categorias = [];
@@ -745,6 +746,7 @@ export class AppsComponent implements OnInit {
 								}
 							}
 						}
+						this.insertada = false;
 						//window.location.replace(this.globals.HOST_CLIENTE);
 					}else{
 						console.log("ERROR en la inserción con el id del usuario registrado");

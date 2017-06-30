@@ -65,9 +65,9 @@ export class InicioComponent implements OnInit,AfterViewInit {
     this.hayCategoria = true;
     this.sessionService.getUserSession().subscribe(
       response => {
-        if(response.status != 204)
+        if(response.status != 204)//Este codigo da cuando el user o la password son incorrectos.
           this.userSession = response.json();
-        if(response.status == 200 && this.userSession.name != ''){
+        if(response.status == 200 && this.userSession.name != ''){//Comprobamos que la peticion es correcta y el user se completa
           console.log(this.userSession);
           this.user = true;
         }

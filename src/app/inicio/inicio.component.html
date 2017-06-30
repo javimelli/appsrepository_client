@@ -59,6 +59,7 @@
 					<a class="" [routerLink]="['app-detalle', app.id]">
 						<div class="thumbnail  elemento-app">
 							<span class="badge media">{{app.average}}</span>
+							<span class="badge media_vistas">Visitas: {{app.visitas}}</span>
 							<img [src]="iconos[app.id_fotos]" alt=""  data-id-fotos="app.id_fotos" class="img-icono">
 							<div class="caption">
 								<h5>{{app.title}}</h5>

@@ -10,12 +10,12 @@ declare var jQuery:any;
 declare var $:any;
 
 @Component({
-  selector: 'app-registro',
+  selector: 'app-editar-registro',
   providers: [ Globals ],
-  templateUrl: './registro.component.html',
-  styleUrls: ['./registro.component.css']
+  templateUrl: './editar-registro.component.html',
+  styleUrls: ['./editar-registro.component.css']
 })
-export class RegistroComponent implements OnInit {
+export class EditarRegistroComponent implements OnInit {
 
 	private id_fotos;
 
@@ -27,7 +27,6 @@ export class RegistroComponent implements OnInit {
 	private subida = false;
 	private msgCorrecto = true;
 
-	private aceptaCondiciones = false;
 	private obligatorios = true;
 
 	private file:any = '';//Guardaremos el array de files que se carguen en el input
@@ -37,7 +36,10 @@ export class RegistroComponent implements OnInit {
 	*/
 	private formData = new FormData();
 
+	private userSession = {"name": '', "id": 9999};
+
 	private user = {
+		"id": 9999,
 		"name": "",
 		"last_name1": "",
 		"last_name2": "",
@@ -52,16 +54,43 @@ export class RegistroComponent implements OnInit {
 	}
 
 	constructor(private uploadFiles:UploadFiles, private globals:Globals, private imagesService:ImagesService, private userService:UserService, private router: Router, private sessionService:SessionService) { 
-		//Creamos el numero aleatorio para las fotogtradias
-		var aleatorio = Math.round(Math.random() * (9999 - 1000) + 1000);
-		var date = new Date();
-		this.id_fotos = date.getDate()+"_"+date.getMonth()+"_"+date.getFullYear()+"_"+date.getHours()+"_"+date.getMinutes()+"_"+date.getSeconds()+"_"+aleatorio;
-		this.user.id_fotos = this.id_fotos;
-		console.log(this.user.id_fotos);
 	}
 
 	ngOnInit() {
+		this.cargarDatos();
 		this.cargarPaises();
+	}
+
+	public cargarDatos(){
+		this.sessionService.getUserSession().subscribe(
+			response => {
+				this.userSession = response.json();
+				this.userService.getUserByIdByEdit(this.userSession.id).subscribe(
+					response => {
+						this.user = response.json();
+						console.log(this.user);
+						this.imagesService.getImagesById_fotos(this.user.id_fotos).subscribe(
+							response => {
+								if(response.json().length >= 1)
+									this.subida = true;
+								console.log(response.json());
+								this.imagenes.push({"url": this.globals.HOST + response.json()[0].url, "id": response.json()[0].id, "urlServer": response.json()[0].url});
+								console.log(this.imagenes);
+							},
+							error => {
+
+							}
+						);
+					},
+					error => {
+
+					}
+				);
+			},
+			error => {
+				console.log(error);
+			}
+		);
 	}
 
 	public cargarPaises(){
@@ -169,7 +198,7 @@ export class RegistroComponent implements OnInit {
 		this.msgCorrecto = true;	
 	}
 
-	public darDeAlta(){
+	public Actualizar(){
 		if(this.user.name == ""){
 			this.obligatorios = false;
 		}
@@ -197,17 +226,37 @@ export class RegistroComponent implements OnInit {
 			this.obligatorios = true;
 		}
 
-		if(this.obligatorios == true && this.aceptaCondiciones == true){
+		if(this.obligatorios == true){
 			//Insertamos
-			this.userService.postUser(this.user).subscribe(
+			this.userService.putUser(this.user, this.user.id).subscribe(
 				response => {
-					this.router.navigate(['/login']);
+					this.router.navigate(['/']);
 				},
 				error => {
 
 				}
 			);
 		}
+	}
+
+	public darDeBaja(){
+		this.userService.deleteUser(this.user.id).subscribe(
+			response => {
+				this.sessionService.logOut().subscribe(
+					response => {
+						console.log(response.text());
+						if(response.text() == 'true')
+							window.location.replace(this.globals.HOST_CLIENTE);
+					},
+					error => {
+
+					}
+				);
+			},
+			error => {
+				
+			}
+		);
 	}
 
 

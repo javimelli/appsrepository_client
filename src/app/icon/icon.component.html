@@ -10,11 +10,11 @@
 	<div class="col-sm-1">
 		<button class="btn btn-file" (click)="upload();" [disabled]="subida">Subir</button>
 	</div>
-	<div class="col-sm-1" [hidden]="clases.thumbnail">
+	<div class="col-sm-1" *ngFor="let img of imagenes">
 		<a href="javascript:void(0)" class="thumbnail">
-			<img [src]="url" alt="">
+			<img [src]="img.url" alt="">
 		</a>
-		<a href="javascript:void(0)" class="btn text-primary" (click)="eliminarImage();" [hidden]="clases.btnEliminar">Eliminar</a>
+		<a href="javascript:void(0)" class="btn text-primary" (click)="eliminarImage(img.urlServer, img.id);">Eliminar</a>
 	</div>
 </div>
 

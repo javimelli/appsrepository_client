@@ -11,15 +11,21 @@
 			<!--<li><a [routerLink]="['/']" class="navbar-brand elemento_cabecera a_cabecera">Home</a></li>-->
 			<li><a [routerLink]="['/']" class="navbar-brand elemento_cabecera a_cabecera">Aplicaciones</a></li>
 			<li><a [routerLink]="['/datasets']" class="navbar-brand elemento_cabecera a_cabecera">Conjunto De Datos</a></li>
+			<li><a [routerLink]="['/estadisticas']" class="navbar-brand elemento_cabecera a_cabecera">Estadísticas</a></li>
 
 			<li *ngIf="login"><a [routerLink]="['/login']" class="enlace_login navbar-brand elemento_cabecera">Login</a></li>
-			<li *ngIf="login"><a [routerLink]="['/login']" class="enlace_login navbar-brand elemento_cabecera">Registro</a></li>
+			<li *ngIf="login"><a [routerLink]="['/registro']" class="enlace_login navbar-brand elemento_cabecera">Registro</a></li>
 
 			<li class="dropdown" *ngIf="user" (click)="desplegar_dropdown();" (blur)="recojer_dropdown();" [class.open]="desplegado">
-				<a href="#" class="dropdown-toggle  enlace_login navbar-brand elemento_cabecera" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{userSession.username}} <span class="caret"></span></a>
+				<a href="javascript:void(0)" class="dropdown-toggle  enlace_login navbar-brand elemento_cabecera" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+					{{userSession.username}}
+					<img [src]="url_img_user" alt="" class="img-rounded img_user" *ngIf="url_img_user != undefined">
+					<img src="../assets/Login.PNG" alt="" class="img-rounded img_user" *ngIf="url_img_user == undefined">
+					<span class="caret"></span>
+				</a>
 					<ul class="dropdown-menu">
-						<li><a href="#">Mis Apps</a></li>
-						<li><a href="#">Mis Datasets</a></li>
+						<li><a href="javascript:void(0)" [routerLink]="['/mis-apps']">Mis Apps</a></li>
+						<li><a href="javascript:void(0)" [routerLink]="['/editar-perfil']">Editar perfil</a></li>
 						<li role="separator" class="divider"></li>
 						<li><a href="javascript:void(0);" (click)="logOut();">Log Out</a></li>
 					</ul>

@@ -1,0 +1,38 @@
+<div class="container">
+	<div class="col-sm-12 contenedor">
+		<div class="panel panel-default">
+			<div class="panel-heading titulo">Estadísticas De Conjuntos De Datos</div>
+			  <div class="panel-body">
+			    <p>En esta tabla de estadísticas podras observar datos relevantes de los conjuntos de datos y compararlos rápidamente con otros conjuntos del portal</p>
+			  </div>
+			  <table class="table">
+			  	<thead>
+			  		<tr>
+			  			<th>Título</th>
+			  			<th>Institución</th>
+				  		<th>País</th>
+				  		<th>Provincia</th>
+				  		<th>Ciudad</th>
+				  		<th>Categoría</th>
+				  		<th>Nº Apps</th>
+				  		<th>Usuario</th>
+		  			</tr>
+			  	</thead>
+			  	<tbody>
+			  		<tr *ngFor="let dataset of datasets">
+			  			<th style="width: 278px !important">{{dataset.title}}</th>
+			  			<th>{{dataset.nameInstitution}}</th>
+			  			<th>{{dataset.countryInstitution}}</th>
+			  			<th *ngIf="dataset.provinceInstitution != ''">{{dataset.provinceInstitution}}</th>
+			  			<th *ngIf="dataset.provinceInstitution == ''" style="text-align: center !important">-</th>
+			  			<th *ngIf="dataset.cityInstitution != ''">{{dataset.cityInstitution}}</th>
+			  			<th *ngIf="dataset.cityInstitution == ''" style="text-align: center !important">-</th>
+			  			<th>{{dataset.categoria}}</th>
+			  			<th><span class="badge">{{dataset.apps}}</span></th>
+			  			<th>{{dataset.owner}}</th>
+			  		</tr>
+			  	</tbody>
+			  </table>
+		</div>
+	</div>
+</div>

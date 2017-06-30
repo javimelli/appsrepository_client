@@ -23,6 +23,14 @@ export class AppService {
 		return this.http.get(url,options);
 	}
 
+	getAppsByOwner(id){
+		console.log('Ejecutando servicio getAppsByOwner');
+		let url = this.urlBase + "/owner/" + id;
+		let headers = new Headers();
+		let options = new RequestOptions({ headers: headers, withCredentials: true});
+		return this.http.get(url,options);
+	}
+
 	getAppsByLimit(num, init){
 		console.log('Ejecutando servicio getAppsByCountry');
 		let url = this.urlBase + "/limit/" + num + "/" + init;

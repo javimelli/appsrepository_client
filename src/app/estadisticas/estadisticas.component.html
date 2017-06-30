@@ -1,0 +1,26 @@
+<div class="container">
+	<div class="col-sm-12 contenedor">
+		<div class="row">
+			<div class="col-sm-3 col-sm-offset-2 contenedor_enlaces">
+				<a href="javascript:void(0)" *ngIf="userSession.name != ''" [routerLink]="['/app-estadisticas']">
+				<p class="titulo">Estadísticas APPS</p>
+				<img src="../assets/app-estadisticas.PNG" class="img-responsive" alt="">
+				</a>
+				<a href="javascript:void(0)" *ngIf="userSession.name == ''" [routerLink]="['/login']">
+				<p class="titulo">Estadísticas APPS</p>
+				<img src="../assets/app-estadisticas.PNG" class="img-responsive" alt="">
+				</a>
+			</div>
+			<div class="col-sm-3 col-sm-offset-2 contenedor_enlaces">
+				<a href="javascript:void(0)" *ngIf="userSession.name != ''" [routerLink]="['/dataset-estadisticas']">
+				<p class="titulo">Estadísticas CONJUNTO DE DATOS</p>
+				<img src="../assets/dataset-estadisticas.PNG" class="img-responsive" alt="">
+				</a>
+				<a href="javascript:void(0)" *ngIf="userSession.name == ''" [routerLink]="['/login']">
+				<p class="titulo">Estadísticas CONJUNTO DE DATOS</p>
+				<img src="../assets/dataset-estadisticas.PNG" class="img-responsive" alt="">
+				</a>
+			</div>
+		</div>
+	</div>
+</div>

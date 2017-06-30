@@ -1,0 +1,36 @@
+<div class="container">
+	<div class="col-sm-12 contenedor">
+		<div class="panel panel-default">
+			<div class="panel-heading titulo">Estadísticas De App</div>
+			  <div class="panel-body">
+			    <p>En esta tabla de estadísticas podras observar datos relevantes de las aplicaciones del portal y poder compararlos rápidamente con los datos de otras apps.</p>
+			  </div>
+			  <table class="table">
+			  	<thead>
+			  		<tr>
+			  			<th>Título</th>
+				  		<th>Nº Visitas</th>
+				  		<th>Media De Votos</th>
+				  		<th>País</th>
+				  		<th>Idioma</th>
+				  		<th>Nº Conjunto De Datos</th>
+				  		<th>Catgorías</th>
+				  		<th>Usuario</th>
+		  			</tr>
+			  	</thead>
+			  	<tbody>
+			  		<tr *ngFor="let app of apps">
+			  			<th>{{app.title}}</th>
+			  			<th>{{app.visitas}}</th>
+			  			<th>{{app.average}}</th>
+			  			<th>{{app.country}}</th>
+			  			<th>{{app.language}}</th>
+			  			<th><span class="badge">{{app.numDatasets}}</span></th>
+			  			<th><p *ngFor="let categoria of app.categorias">{{categoria.name}}</p></th>
+			  			<th>{{app.username}}</th>
+			  		</tr>
+			  	</tbody>
+			  </table>
+		</div>
+	</div>
+</div>

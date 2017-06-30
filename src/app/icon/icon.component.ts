@@ -40,6 +40,8 @@ export class IconComponent implements OnInit {
 
   private icono = {"id": 0, "url": ""};
 
+  private imagenes = [];
+
   ngOnChanges() {
     // changes.prop contains the old and the new value...
     if(this.idFotos != ''){
@@ -52,10 +54,12 @@ export class IconComponent implements OnInit {
             if(this.images.length != 0){
               for(let i=0; i<this.images.length; i++){
                 if(this.images[i].type == "icon"){
-                    this.clases.thumbnail = false;
+                    //this.clases.thumbnail = false;
                     this.subida = true;
-                    this.url = this.globals.HOST + this.images[i].url;
-                    this.icono = this.images[i];
+                    this.imagenes.push({"url": this.globals.HOST + this.images[i].url, "id": this.images[i].id, "urlServer": this.images[i].url});
+                    console.log("IMÁGENES:",this.imagenes);
+                    //this.url = this.globals.HOST + this.images[i].url;
+                    //this.icono = this.images[i];
                 }
               }
             }
@@ -118,14 +122,14 @@ export class IconComponent implements OnInit {
           let url = "";
           url = response.text();
           //Cambiamos las barras '\' por barras '/' por si el directorio viene de windows
-          this.icono.url = url;
+          //this.icono.url = url;
           url = url.replace(/\\/g, "/");
-          this.url = this.globals.HOST + url;
+          //this.url = this.globals.HOST + url;
           //this.url = this.globals.HOST + this.url;
           console.log(this.url);
           this.subida = true;
           this.clases.msgCorrecto = false;
-          this.clases.thumbnail = false;
+          //this.clases.thumbnail = false;
           this.imagesService.postImages({
             "id_fotos": this.idFotos,
             "url": url,
@@ -133,7 +137,8 @@ export class IconComponent implements OnInit {
           }).subscribe(
             response => {
               console.log(response.text());
-              this.icono.id = response.json();
+              this.imagenes.push({"url": this.globals.HOST + url, "id": response.text(), "urlServer": url});
+              console.log("IMÁGENES:",this.imagenes);
             },
             error => {
 
@@ -147,8 +152,8 @@ export class IconComponent implements OnInit {
     }
   }
 
-  public eliminarImage(){
-    this.imagesService.deleteImages(this.icono.id).subscribe(
+  public eliminarImage(url, id){
+    this.imagesService.deleteImages(id).subscribe(
       response => {
         this.subida = false;
         this.clases.thumbnail = true;
@@ -157,8 +162,8 @@ export class IconComponent implements OnInit {
         console.log("ERROR en el borrado de la imagen");
       }
     );
-    let urlDelete = this.icono.url.replace(/\//g,"\\");
-    this.uploadFiles.deleteFiles(urlDelete).subscribe(
+    //let urlDelete = this.icono.url.replace(/\//g,"\\");
+    this.uploadFiles.deleteFiles(url).subscribe(
       response => {
         console.log("Imagen eliminada");
       },
@@ -166,6 +171,8 @@ export class IconComponent implements OnInit {
         console.log("");
       }  
     );
+    this.imagenes.splice(0,1);
     this.clases.msgCorrecto = true;
+    $('#icono').replaceWith($('#icono').val(''));
   }
 }

@@ -37,3 +37,10 @@
     /* text-align: left; */
     font-family: sans-serif;
 }
+
+.img_user {
+	width: 28px;
+	height: 28px;
+	display: inline;
+	border-radius: 100%;
+}

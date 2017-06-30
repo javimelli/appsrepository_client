@@ -203,6 +203,7 @@
 	<p class="text-success" [hidden]="clases.msgInsercionDataset">Has insertado el Dataset correctamente, ya puedes seleccionarlo.</p>
 	<hr>
 	<p class="text-danger" [hidden]="clases.msgObligatoriosApp">Debes rellenar los campos obligatorios para enviar la app</p>
+	<p class="bg-success" [hidden]="insertada">Has insertado la app correctamente</p>
 	<button class="btn btn-primary" (click)="enviarForm();">Enviar App</button>
 	<a [routerLink]="['']" class="btn">Cancelar</a>
 </div>

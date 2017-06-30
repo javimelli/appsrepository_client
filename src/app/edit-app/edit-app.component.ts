@@ -26,6 +26,7 @@ export class EditAppComponent implements OnInit {
 	private appId;
 
 	private userSession = {"name": '', "id": 9999};
+	private insertada = true;
 
   	//Atributos para guardar la insformacion en peticiones Ajax
 	private categorias = [];
@@ -854,6 +855,7 @@ export class EditAppComponent implements OnInit {
 								console.log("ERROR en el borrado de dataset_apps");
 							}
 						);
+						this.insertada = false;
 					}else{
 						console.log("ERROR en la inserción con el id del usuario registrado");
 					}

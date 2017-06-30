@@ -8,11 +8,11 @@
 		<div class="row">
 			<div class="col-sm-6">
 				<label for="Last_name1">Primer Apellido:</label>
-				<input type="text" id="Last_name1" name="Last_name1" class="form-control" [(ngModel)]="user.last_name1" required [class.error]="!obligatorios">
+				<input type="text" id="last_name1" name="Last_name1" class="form-control" [(ngModel)]="user.last_name1" required [class.error]="!obligatorios">
 			</div>
 			<div class="col-sm-6">
 				<label for="Last_name2">Segundo Apellido:</label>
-				<input type="text" id="Last_name2" name="Last_name2" class="form-control" [(ngModel)]="user.last_name2" required [class.error]="!obligatorios">	
+				<input type="text" id="last_name2" name="Last_name2" class="form-control" [(ngModel)]="user.last_name2" required [class.error]="!obligatorios">	
 			</div>
 		</div>
 	</div>
@@ -76,13 +76,11 @@
 	<br>
 	<div class="form-group">
 		<div class="row">
-			<div class="col-sm-3 col-sm-offset-5">	
-				<label for="aceptar" class="text-muted">Acpeto las condiciones de uso</label>
-				<input type="checkbox" id="aceptar" name="aceptar" class="" [(ngModel)]="aceptaCondiciones">
-				<p class="text-muted" [hidden]="aceptaCondiciones">Debes acptar las condiciones de uso para darte de alta</p>
+			<div class="col-sm-4 col-sm-offset-4">	
 				<br><br>
 				<p class="bg-danger" [hidden]="obligatorios">Debes rellenar los campos obligatorios</p>
-				<button class="btn btn-primary" (click)="darDeAlta();">Dar De Alta Usuario</button>
+				<button class="btn btn-primary" (click)="Actualizar();">Acutalizar Usiario</button>
+				<button class="btn btn-danger" (click)="darDeBaja();">Dar Baja Usiario</button>
 			</div>	
 		</div>
 	</div>
